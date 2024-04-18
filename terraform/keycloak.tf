@@ -97,12 +97,27 @@ resource "aws_secretsmanager_secret_version" "keycloak_config" {
 
   secret_id     = aws_secretsmanager_secret.keycloak_config[0].id
   secret_string = jsonencode({
-    KC_HOSTNAME = local.kc_domain_name
-    KEYCLOAK_ADMIN_PASSWORD = random_password.keycloak_admin_password.result
-    POSTGRES_PASSWORD = random_password.keycloak_postgres_password.result
-    POSTGRES_DB = "keycloak"
-    POSTGRES_USER = "keycloak"
-    "user1-password" = random_password.keycloak_user_password.result
+    #KC_HOSTNAME = local.kc_domain_name
+    #KEYCLOAK_ADMIN_PASSWORD = random_password.keycloak_admin_password.result
+    #POSTGRES_PASSWORD = random_password.keycloak_postgres_password.result
+    #POSTGRES_DB = "keycloak"
+    #POSTGRES_USER = "keycloak"
+    #"user1-password" = random_password.keycloak_user_password.result
+    KEYCLOAK_ADMIN = "admin"
+    KEYCLOAK_ADMIN_PASSWORD = "admin"
+    KC_PROX = "edge" 
+    KC_HTTP_ENABLED = "true"
+    KC_PROXY_ADDRESS_FORWARDING = "true"
+    KC_HOSTNAME_STRICT_HTTPS = "false"
+    KC_HOSTNAME = "localhost:8080"
+    KC_HOSTNAME_DEBUG = "true" 
+    KC_DB_URL_HOST = "postgres"
+    KC_DB_URL_PORT = "5432"
+    KC_DB = "postgres"
+    KC_DB_USERNAME = "TestUser" 
+    KC_DB_PASSWORD = "k43r#GMt.m_|MQ$Eku){0g2)$+-n"
+    KC_DB_URL_DATABASE = "keycloak"
+    KC_DB_URL = "jdbc:postgresql://cnoe-postgresqlv2.cluster-cv7ba80pgvtb.us-east-1.rds.amazonaws.com/keycloak"
   })
 }
 

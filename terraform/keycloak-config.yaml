@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-config
+  namespace: keycloak
+type: Opaque
+stringData:
+  KC_HOSTNAME: keycloak.cnoe.com
+  KEYCLOAK_ADMIN_PASSWORD: Y7jhgDx4twM7MVhV1dZTrIl1ZBOr49bymUXhBRR6U5t9o23r
+  POSTGRES_DB: keycloak
+  POSTGRES_PASSWORD: jKKA5rzlt6IhvvXjpzHjxzVrTUuutzwAFxvcTZ60k8q9QjDS
+  POSTGRES_USER: keycloak
+  user1-password: CkSKfK5x7n88z4Mm2QqiZMAyHiDtVSb5j1lOJdgnJH7ozpUu

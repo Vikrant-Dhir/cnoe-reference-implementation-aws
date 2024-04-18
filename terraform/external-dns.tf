@@ -1,5 +1,5 @@
 
-resource "aws_iam_policy" "external-dns" {
+/*resource "aws_iam_policy" "external-dns" {
   count = local.dns_count
 
   name_prefix = "cnoe-external-dns-"
@@ -69,3 +69,4 @@ resource "kubectl_manifest" "application_argocd_external_dns" {
     interpreter = ["/bin/bash", "-c"]
   }
 }
+*/
