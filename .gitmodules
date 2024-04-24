@@ -1,0 +1,3 @@
+[submodule "cnoe-aurora-postgresql"]
+	path = cnoe-aurora-postgresql
+	url = https://github.com/aws-samples/pega-on-eks-aurora-postgresql.git
