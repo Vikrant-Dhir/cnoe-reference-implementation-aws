@@ -16,4 +16,4 @@ patchesJson6902:
       namespace: keycloak
     patch: |-
       - op: remove
-        path: /spec/template/spec/containers/0/env/2
+        path: /spec/template/spec/containers/0/env/1
