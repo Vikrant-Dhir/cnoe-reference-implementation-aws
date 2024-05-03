@@ -20,11 +20,17 @@ spec:
             name: keycloak-config
       containers:
         - name: keycloak
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: 'cnoe-admin'
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-config
+                  key: POSTGRES_PASSWORD
           envFrom:
             - secretRef:
                 name: keycloak-config
-            - secretRef:
-                name: postgresql-config
           args:
             - start
           volumeMounts:

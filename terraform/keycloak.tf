@@ -32,8 +32,8 @@ module "external_secrets_role_keycloak" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.14"
   count = local.secret_count
-
   role_name_prefix = "cnoe-external-secrets-"
+  attach_external_secrets_policy = true // VD - fixed the bug without this the aws_iam_role_policy_attachment will not attach the policy to the role 
   
   oidc_providers = {
     main = {
@@ -111,13 +111,13 @@ resource "aws_secretsmanager_secret_version" "keycloak_config" {
     KC_HOSTNAME_STRICT_HTTPS = "false"
     KC_HOSTNAME = "localhost:8080"
     KC_HOSTNAME_DEBUG = "true" 
-    KC_DB_URL_HOST = "postgres"
-    KC_DB_URL_PORT = "5432"
-    KC_DB = "postgres"
-    KC_DB_USERNAME = "TestUser" 
-    KC_DB_PASSWORD = "k43r#GMt.m_|MQ$Eku){0g2)$+-n"
-    KC_DB_URL_DATABASE = "keycloak"
-    KC_DB_URL = "jdbc:postgresql://cnoe-postgresqlv2.cluster-cv7ba80pgvtb.us-east-1.rds.amazonaws.com/keycloak"
+    #KC_DB_URL_HOST = "postgres"
+    #KC_DB_URL_PORT = "5432"
+    #KC_DB = "postgres"
+    #KC_DB_USERNAME = "TestUser" 
+    #KC_DB_PASSWORD = "k43r#GMt.m_|MQ$Eku){0g2)$+-n"
+    #KC_DB_URL_DATABASE = "keycloak"
+    #KC_DB_URL = "jdbc:postgresql://cnoe-postgresqlv2.cluster-cv7ba80pgvtb.us-east-1.rds.amazonaws.com/keycloak"
   })
 }
 
