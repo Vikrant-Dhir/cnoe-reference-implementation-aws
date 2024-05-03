@@ -2,7 +2,7 @@ resources:
   - ../base
   - ns.yaml
   - cm-config.yaml
-  # - postgres.yaml
+  - postgres.yaml
 namespace: keycloak
 patchesStrategicMerge:
   - patches/service.yaml
