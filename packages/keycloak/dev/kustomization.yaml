@@ -7,13 +7,4 @@ namespace: keycloak
 patchesStrategicMerge:
   - patches/service.yaml
   - patches/deployment.yaml
-patchesJson6902:
-  - target:
-      version: v1
-      kind: Deployment
-      group: apps
-      name: keycloak
-      namespace: keycloak
-    patch: |-
-      - op: remove
-        path: /spec/template/spec/containers/0/env/1
+
