@@ -14,6 +14,8 @@ kubectl wait --for=condition=ready pod -l app=keycloak -n keycloak  --timeout=30
 echo "Creating keycloak client for Backstage"
 
 ADMIN_PASSWORD=$(kubectl get secret -n keycloak keycloak-config -o go-template='{{index .data "KEYCLOAK_ADMIN_PASSWORD" | base64decode}}')
+ADMIN_USER=$(kubectl get secret -n keycloak keycloak-config -o go-template='{{index .data "KEYCLOAK_ADMIN" | base64decode}}') 
+
 
 kubectl port-forward -n keycloak svc/keycloak 8080:8080 > /dev/null 2>&1 &
 pid=$!
@@ -27,7 +29,7 @@ while ! nc -vz localhost 8080 > /dev/null 2>&1 ; do
 done
 
 KEYCLOAK_TOKEN=$(curl -sS  --fail-with-body -X POST -H "Content-Type: application/x-www-form-urlencoded" \
---data-urlencode "username=cnoe-admin" \
+--data-urlencode "username=${ADMIN_USER}" \
 --data-urlencode "password=${ADMIN_PASSWORD}" \
 --data-urlencode "grant_type=password" \
 --data-urlencode "client_id=admin-cli" \
