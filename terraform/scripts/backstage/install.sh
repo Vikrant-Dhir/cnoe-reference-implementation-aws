@@ -13,8 +13,13 @@ kubectl wait --for=jsonpath=.status.health.status=Healthy -n argocd application/
 kubectl wait --for=condition=ready pod -l app=keycloak -n keycloak  --timeout=30s
 echo "Creating keycloak client for Backstage"
 
+envsubst < config-payloads/client-payload.json > config-payloads/client-payload-to-be-applied.json
+
+<<'END_COMMENT'
+
 ADMIN_PASSWORD=$(kubectl get secret -n keycloak keycloak-config -o go-template='{{index .data "KEYCLOAK_ADMIN_PASSWORD" | base64decode}}')
 ADMIN_USER=$(kubectl get secret -n keycloak keycloak-config -o go-template='{{index .data "KEYCLOAK_ADMIN" | base64decode}}') 
+
 
 
 kubectl port-forward -n keycloak svc/keycloak 8080:8080 > /dev/null 2>&1 &
@@ -35,12 +40,12 @@ KEYCLOAK_TOKEN=$(curl -sS  --fail-with-body -X POST -H "Content-Type: applicatio
 --data-urlencode "client_id=admin-cli" \
 localhost:8080/realms/master/protocol/openid-connect/token | jq -e -r '.access_token')
 
-envsubst < config-payloads/client-payload.json > config-payloads/client-payload-to-be-applied.json
+
 
 curl -sS -H "Content-Type: application/json" \
 -H "Authorization: bearer ${KEYCLOAK_TOKEN}" \
 -X POST --data @config-payloads/client-payload-to-be-applied.json \
-localhost:8080/admin/realms/cnoe/clients
+ localhost:8080/admin/realms/cnoe/clients 
 
 CLIENT_ID=$(curl -sS -H "Content-Type: application/json" \
 -H "Authorization: bearer ${KEYCLOAK_TOKEN}" \
@@ -53,6 +58,8 @@ export CLIENT_SECRET=$(curl -sS -H "Content-Type: application/json" \
 CLIENT_SCOPE_GROUPS_ID=$(curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X GET  localhost:8080/admin/realms/cnoe/client-scopes | jq -e -r  '.[] | select(.name == "groups") | .id')
 
 curl -sS -H "Content-Type: application/json" -H "Authorization: bearer ${KEYCLOAK_TOKEN}" -X PUT  localhost:8080/admin/realms/cnoe/clients/${CLIENT_ID}/default-client-scopes/${CLIENT_SCOPE_GROUPS_ID}
+
+END_COMMENT
 
 # Get ArgoCD token for Backstage
 kubectl port-forward svc/argocd-server -n argocd 8085:80 > /dev/null 2>&1 &
